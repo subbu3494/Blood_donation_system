@@ -1,0 +1,1325 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🩸 Blood Donation Management System</title>
+  <meta name="description" content="Comprehensive Blood Donation Management System for Andhra Pradesh with donor tracking, emergency alerts, blood bank management, and analytics.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="blood-background" id="bloodBackground"></div>
+  <header>
+    <div class="header-container">
+      <a href="#" class="logo">
+        <span class="logo-icon"></span>
+        <span>Blood<span class="gradient-text">Donation</span></span>
+      </a>
+      <nav>
+        <ul>
+          <li><a href="#" class="active" data-tab="donors">Donors</a></li>
+          <li><a href="#" data-tab="emergency">Emergency</a></li>
+          <li><a href="#" data-tab="blood-banks">Blood Banks</a></li>
+          <li><a href="#" data-tab="analytics">Analytics</a></li>
+          <li><a href="#" data-tab="advanced">Advanced</a></li>
+        </ul>
+      </nav>
+      <button class="language-toggle" id="languageToggle">English / తెలుగు</button>
+    </div>
+  </header>
+  <main id="main-content">
+    <!-- Donors Tab -->
+    <div class="tab-content active" id="donors">
+      <h1 class="section-title">❤️ Donor Management</h1>
+      
+      <!-- Action Button Group - Register and Find Donors -->
+      <div class="action-button-group">
+        <button class="action-button btn-register" id="showDonorForm">
+          🎯 Register as a Donor
+        </button>
+        <button class="action-button btn-find" id="showFindDonorsForm">
+          🔍 Find Available Donors
+        </button>
+      </div>
+
+      <!-- Find Donors Form -->
+      <div class="find-donors-form" id="findDonorsForm" style="display: none;">
+        <div class="find-donors-header">
+          <h2 class="find-donors-title">Find Available Donors</h2>
+          <p class="find-donors-subtitle">Search by blood group and location to find donors who can help immediately</p>
+        </div>
+        <form id="searchDonorsForm">
+          <div class="search-form">
+            <div class="form-group">
+              <label class="form-label">Blood Group</label>
+              <select class="form-control search-input" id="searchBloodGroup" required>
+                <option value="">Select blood group</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">District</label>
+              <input type="text" class="form-control search-input" id="searchDistrict" placeholder="Start typing district name..." required>
+              <div class="autocomplete-dropdown" id="districtDropdown"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mandal (Optional)</label>
+              <input type="text" class="form-control search-input" id="searchMandal" placeholder="Enter mandal name...">
+              <div class="autocomplete-dropdown" id="mandalDropdown"></div>
+            </div>
+            <button type="submit" class="search-button">🔍 Search Available Donors</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="notification success">
+        <div class="notification-icon">🌟</div>
+        <div>
+          <strong>Did you know?</strong> One blood donation can save up to 3 lives. Thank you for being a hero!
+        </div>
+      </div>
+      
+      <!-- Registration Form (now hidden by default) -->
+      <div class="card floating" id="donorRegistrationCard" style="display: none;">
+        <div class="card-header">
+          <h2 class="card-title">Register New Donor</h2>
+          <button class="btn btn-outline" id="cancelDonorForm">Cancel</button>
+        </div>
+        <form id="donorForm">
+          <div class="form-group">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-control" placeholder="Enter your full name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Age</label>
+            <input type="number" class="form-control" min="18" max="65" placeholder="Enter your age (18-65)" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Gender</label>
+            <select class="form-control" required>
+              <option value="">Select your gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Blood Group</label>
+            <select class="form-control" required>
+              <option value="">Select your blood group</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Weight (kg)</label>
+            <input type="number" class="form-control" min="45" placeholder="Enter your weight (minimum 45kg)" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" placeholder="Enter your phone number" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" placeholder="Enter your email address">
+          </div>
+          <div class="form-group">
+            <label class="form-label">District</label>
+            <select class="form-control" id="districtSelect" required>
+              <option value="">Select your district</option>
+              <option value="Anantapur">Anantapur</option>
+              <option value="Chittoor">Chittoor</option>
+              <option value="East Godavari">East Godavari</option>
+              <option value="Guntur">Guntur</option>
+              <option value="Krishna">Krishna</option>
+              <option value="Kurnool">Kurnool</option>
+              <option value="Nellore">Nellore</option>
+              <option value="Prakasam">Prakasam</option>
+              <option value="Srikakulam">Srikakulam</option>
+              <option value="Visakhapatnam">Visakhapatnam</option>
+              <option value="Vizianagaram">Vizianagaram</option>
+              <option value="West Godavari">West Godavari</option>
+              <option value="YSR Kadapa">YSR Kadapa</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mandal</label>
+            <input type="text" class="form-control" id="mandalInput" placeholder="Enter your mandal" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Full Address</label>
+            <textarea class="form-control" rows="3" placeholder="Enter your complete address" required></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Donation Date</label>
+            <input type="date" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Health & Lifestyle Questions</label>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; padding: 1rem; background: var(--primary-light); border-radius: 1rem;">
+              <div>
+                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                  <input type="checkbox"> Do you smoke?
+                </label>
+              </div>
+              <div>
+                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                  <input type="checkbox"> Do you consume alcohol?
+                </label>
+              </div>
+              <div>
+                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                  <input type="checkbox"> Do you have any tattoos?
+                </label>
+              </div>
+              <div>
+                <label style="display: flex; align-items: center; gap: 0.5rem;">
+                  <input type="checkbox"> Any medical conditions?
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Availability Status</label>
+            <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem;">
+              <div class="toggle-switch">
+                <input type="checkbox" id="availabilityToggle">
+                <span class="toggle-slider"></span>
+              </div>
+              <span id="availabilityStatus" style="font-weight: 600; font-size: 1.1rem;">Unavailable</span>
+            </div>
+          </div>
+          <div class="btn-group">
+            <button type="submit" class="btn btn-primary">Register Donor</button>
+            <button type="button" class="btn btn-outline" id="cancelDonorForm2">Cancel</button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Search Results Section (initially hidden) -->
+      <div class="search-results-card" id="searchResults" style="display: none;">
+        <div class="search-results-header">
+          <h3 class="search-results-title">Available Donors</h3>
+          <span class="search-results-count" id="resultsCount">0 Donors Found</span>
+        </div>
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Donor Name</th>
+                <th>Blood Group</th>
+                <th>District</th>
+                <th>Mandal</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="searchResultsBody">
+              <!-- Results will be populated here by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-icon">🩸</div>
+          <div class="stat-value">1,247</div>
+          <div class="stat-label">Active Donors</div>
+          <div class="stat-description">Ready to save lives in Andhra Pradesh</div>
+        </div>
+        <div class="stat-card success">
+          <div class="stat-icon">✅</div>
+          <div class="stat-value">892</div>
+          <div class="stat-label">Available Now</div>
+          <div class="stat-description">Can donate immediately</div>
+        </div>
+        <div class="stat-card warning">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-value">355</div>
+          <div class="stat-label">Temporarily Unavailable</div>
+          <div class="stat-description">Resting between donations</div>
+        </div>
+        <div class="stat-card danger">
+          <div class="stat-icon">⚠️</div>
+          <div class="stat-value">47</div>
+          <div class="stat-label">Need Replenishment</div>
+          <div class="stat-description">Low stock in blood banks</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">🏆 Donor Leaderboard</h2>
+          <select class="form-control" style="width: auto;">
+            <option>All Districts</option>
+            <option>Anantapur</option>
+            <option>Chittoor</option>
+            <option>East Godavari</option>
+            <option>Guntur</option>
+            <option>Krishna</option>
+          </select>
+        </div>
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Donor Name</th>
+                <th>District</th>
+                <th>Blood Group</th>
+                <th>Donations</th>
+                <th>Achievement</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>🥇 1</td>
+                <td>Sai Kumar</td>
+                <td>Visakhapatnam</td>
+                <td>O+</td>
+                <td>28</td>
+                <td><span class="badge badge-hero badge-animated">Hero Donor</span></td>
+                <td><span class="badge badge-success">Available</span></td>
+              </tr>
+              <tr>
+                <td>🥈 2</td>
+                <td>Priya Reddy</td>
+                <td>Guntur</td>
+                <td>A+</td>
+                <td>17</td>
+                <td><span class="badge badge-gold">Gold Donor</span></td>
+                <td><span class="badge badge-success">Available</span></td>
+              </tr>
+              <tr>
+                <td>🥉 3</td>
+                <td>Venkatesh</td>
+                <td>Krishna</td>
+                <td>B+</td>
+                <td>12</td>
+                <td><span class="badge badge-gold">Gold Donor</span></td>
+                <td><span class="badge badge-warning">Unavailable</span></td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Lakshmi</td>
+                <td>East Godavari</td>
+                <td>AB-</td>
+                <td>9</td>
+                <td><span class="badge badge-silver">Silver Donor</span></td>
+                <td><span class="badge badge-success">Available</span></td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Raju Naidu</td>
+                <td>Anantapur</td>
+                <td>O-</td>
+                <td>6</td>
+                <td><span class="badge badge-silver">Silver Donor</span></td>
+                <td><span class="badge badge-warning">Unavailable</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">🏅 Achievement Badges</h2>
+        </div>
+        <div class="badges-showcase">
+          <div class="badge-item">
+            <div class="badge-icon badge-bronze">🥉</div>
+            <div class="badge-name">Bronze</div>
+            <div class="badge-description">1-3 Donations</div>
+          </div>
+          <div class="badge-item">
+            <div class="badge-icon badge-silver">🥈</div>
+            <div class="badge-name">Silver</div>
+            <div class="badge-description">4-9 Donations</div>
+          </div>
+          <div class="badge-item">
+            <div class="badge-icon badge-gold">🥇</div>
+            <div class="badge-name">Gold</div>
+            <div class="badge-description">10-19 Donations</div>
+          </div>
+          <div class="badge-item">
+            <div class="badge-icon badge-hero">🏆</div>
+            <div class="badge-name">Hero</div>
+            <div class="badge-description">20+ Donations</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Emergency Tab -->
+
+<div class="tab-content" id="emergency">
+  <h1 class="section-title">🚨 Emergency Requests</h1>
+  <div class="notification danger">
+    <div class="notification-icon">❗</div>
+    <div>
+      <strong>CRITICAL ALERT:</strong> 3 emergency requests in the last hour requiring O+ blood in Visakhapatnam. Immediate response needed!
+    </div>
+  </div>
+
+  <div class="card floating">
+    <div class="card-header">
+      <h2 class="card-title">New Emergency Request</h2>
+      <button class="btn btn-danger glow-on-hover" id="showEmergencyForm">+ Create Emergency Request</button>
+    </div>
+    <form id="emergencyForm" style="display: none;">
+      <div class="form-group">
+        <label class="form-label">Patient Name</label>
+        <input type="text" class="form-control" name="patientName" placeholder="Enter patient's full name" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Required Blood Group</label>
+        <select class="form-control" name="bloodGroup" required>
+          <option value="">Select required blood group</option>
+          <option value="A+">A+</option>
+          <option value="A-">A-</option>
+          <option value="B+">B+</option>
+          <option value="B-">B-</option>
+          <option value="AB+">AB+</option>
+          <option value="AB-">AB-</option>
+          <option value="O+">O+</option>
+          <option value="O-">O-</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Urgency Level</label>
+        <select class="form-control" name="urgency" required>
+          <option value="">Select urgency level</option>
+          <option value="critical">Critical (≤2 hours)</option>
+          <option value="urgent">Urgent (≤24 hours)</option>
+          <option value="normal">Normal (≤48 hours)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Hospital Name</label>
+        <input type="text" class="form-control" name="hospitalName" placeholder="Enter hospital name" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Hospital Address</label>
+        <textarea class="form-control" rows="2" name="hospitalAddress" placeholder="Enter complete hospital address" required></textarea>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Contact Person</label>
+        <input type="text" class="form-control" name="contactPerson" placeholder="Enter contact person name" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Contact Phone</label>
+        <input type="tel" class="form-control" name="contactPhone" placeholder="Enter contact phone number" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Doctor Approval</label>
+        <select class="form-control" name="doctorApproval" required>
+          <option value="">Select approving doctor</option>
+          <option value="dr1">Dr. Srinivas - KIMS Hospital</option>
+          <option value="dr2">Dr. Anitha - Apollo Hospital</option>
+          <option value="dr3">Dr. Rajesh - Care Hospital</option>
+          <option value="dr4">Dr. Priya - Government General Hospital</option>
+        </select>
+      </div>
+      <div class="btn-group">
+        <button type="submit" class="btn btn-danger">Submit Emergency Request</button>
+        <button type="button" class="btn btn-outline" id="cancelEmergencyForm">Cancel</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="stats-container">
+    <div class="stat-card danger">
+      <div class="stat-icon">🚑</div>
+      <div class="stat-value">12</div>
+      <div class="stat-label">Active Critical Cases</div>
+      <div class="stat-description">Need blood within 2 hours</div>
+    </div>
+    <div class="stat-card warning">
+      <div class="stat-icon">⏱️</div>
+      <div class="stat-value">28</div>
+      <div class="stat-label">Urgent Requests</div>
+      <div class="stat-description">Need blood within 24 hours</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📋</div>
+      <div class="stat-value">45</div>
+      <div class="stat-label">Normal Requests</div>
+      <div class="stat-description">Need blood within 48 hours</div>
+    </div>
+    <div class="stat-card success">
+      <div class="stat-icon">📈</div>
+      <div class="stat-value">98%</div>
+      <div class="stat-label">Response Rate</div>
+      <div class="stat-description">Donors responding to alerts</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Active Emergency Requests</h2>
+    </div>
+    <div class="table-container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Patient</th>
+            <th>Blood Group</th>
+            <th>Urgency</th>
+            <th>Hospital</th>
+            <th>Location</th>
+            <th>Time Left</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="emergency-alert">
+            <td>EMG-2023-001</td>
+            <td>Rahul Sharma</td>
+            <td>O+</td>
+            <td><span class="badge badge-danger">Critical</span></td>
+            <td>KIMS Hospital</td>
+            <td>Visakhapatnam</td>
+            <td>1h 23m</td>
+            <td><span class="badge badge-warning">Matching Donors</span></td>
+          </tr>
+          <tr>
+            <td>EMG-2023-002</td>
+            <td>Geetha Devi</td>
+            <td>A-</td>
+            <td><span class="badge badge-warning">Urgent</span></td>
+            <td>Apollo Hospital</td>
+            <td>Guntur</td>
+            <td>18h 45m</td>
+            <td><span class="badge badge-success">Donor Assigned</span></td>
+          </tr>
+          <tr>
+            <td>EMG-2023-003</td>
+            <td>Kiran Kumar</td>
+            <td>B+</td>
+            <td><span class="badge badge-danger">Critical</span></td>
+            <td>Care Hospital</td>
+            <td>Vijayawada</td>
+            <td>0h 58m</td>
+            <td><span class="badge badge-danger">No Response</span></td>
+          </tr>
+          <tr>
+            <td>EMG-2023-004</td>
+            <td>Sita Rani</td>
+            <td>AB+</td>
+            <td><span class="badge badge-warning">Urgent</span></td>
+            <td>Government Hospital</td>
+            <td>Tirupati</td>
+            <td>22h 12m</td>
+            <td><span class="badge badge-success">Completed</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <h2 class="card-title">Emergency Response Process</h2>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 2rem; margin-top: 1.5rem;">
+      <div style="display: flex; align-items: flex-start; gap: 1.5rem; position: relative; padding-left: 3rem;">
+        <div style="position: absolute; left: 0; top: 0; width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.25rem; box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3);">1</div>
+        <div>
+          <h3 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.5rem;">Emergency Request Submitted</h3>
+          <p>Complete details including patient information, blood type, urgency level, and hospital contact information.</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 1.5rem; position: relative; padding-left: 3rem;">
+        <div style="position: absolute; left: 0; top: 0; width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.25rem; box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3);">2</div>
+        <div>
+          <h3 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.5rem;">Doctor Approval Required</h3>
+          <p>Medical professional verifies the emergency and approves the request before proceeding.</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 1.5rem; position: relative; padding-left: 3rem;">
+        <div style="position: absolute; left: 0; top: 0; width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.25rem; box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3);">3</div>
+        <div>
+          <h3 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.5rem;">AI Donor Matching</h3>
+          <p>System identifies eligible donors based on location, blood type, availability, and donation history.</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 1.5rem; position: relative; padding-left: 3rem;">
+        <div style="position: absolute; left: 0; top: 0; width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.25rem; box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3);">4</div>
+        <div>
+          <h3 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.5rem;">Multi-Channel Notifications</h3>
+          <p>Donors receive alerts via Push → WhatsApp → SMS → Call (max 3 attempts per channel).</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 1.5rem; position: relative; padding-left: 3rem;">
+        <div style="position: absolute; left: 0; top: 0; width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.25rem; box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3);">5</div>
+        <div>
+          <h3 style="font-weight: 700; color: var(--primary-dark); margin-bottom: 0.5rem;">Donor Confirmation & Coordination</h3>
+          <p>Donor confirms availability and hospital coordinates pickup/donation logistics.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Blood Banks Tab -->
+    <div class="tab-content" id="blood-banks">
+      <h1 class="section-title">🏥 Blood Bank Management</h1>
+      <div class="card floating">
+        <div class="card-header">
+          <h2 class="card-title">Blood Stock Levels</h2>
+          <button class="btn btn-primary">+ Add Stock</button>
+        </div>
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Blood Group</th>
+                <th>Available Units</th>
+                <th>Threshold</th>
+                <th>Status</th>
+                <th>Last Updated</th>
+                <th>Progress</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>O+</td>
+                <td>156</td>
+                <td>50</td>
+                <td><span class="badge badge-success">Sufficient</span></td>
+                <td>2 hours ago</td>
+                <td>
+                  <div class="progress-container">
+                    <div class="progress-bar" style="width: 78%;"></div>
+                  </div>
+                </td>
+                <td>
+                  <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Update</button>
+                </td>
+              </tr>
+              <tr>
+                <td>A+</td>
+                <td>89</td>
+                <td>45</td>
+                <td><span class="badge badge-success">Sufficient</span></td>
+                <td>1 hour ago</td>
+                <td>
+                  <div class="progress-container">
+                    <div class="progress-bar" style="width: 68%;"></div>
+                  </div>
+                </td>
+                <td>
+                  <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Update</button>
+                </td>
+              </tr>
+              <tr>
+                <td>B+</td>
+                <td>32</td>
+                <td>40</td>
+                <td><span class="badge badge-warning">Low Stock</span></td>
+                <td>3 hours ago</td>
+                <td>
+                  <div class="progress-container">
+                    <div class="progress-bar" style="width: 35%; background: linear-gradient(90deg, var(--warning), #d97706);"></div>
+                  </div>
+                </td>
+                <td>
+                  <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Update</button>
+                </td>
+              </tr>
+              <tr>
+                <td>AB+</td>
+                <td>18</td>
+                <td>20</td>
+                <td><span class="badge badge-danger">Critical</span></td>
+                <td>45 minutes ago</td>
+                <td>
+                  <div class="progress-container">
+                    <div class="progress-bar" style="width: 25%; background: linear-gradient(90deg, var(--danger), #dc2626);"></div>
+                  </div>
+                </td>
+                <td>
+                  <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Update</button>
+                </td>
+              </tr>
+              <tr>
+                <td>O-</td>
+                <td>24</td>
+                <td>30</td>
+                <td><span class="badge badge-warning">Low Stock</span></td>
+                <td>2 hours ago</td>
+                <td>
+                  <div class="progress-container">
+                    <div class="progress-bar" style="width: 40%; background: linear-gradient(90deg, var(--warning), #d97706);"></div>
+                  </div>
+                </td>
+                <td>
+                  <button class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Update</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-icon">🏥</div>
+          <div class="stat-value">47</div>
+          <div class="stat-label">Registered Blood Banks</div>
+          <div class="stat-description">Across Andhra Pradesh</div>
+        </div>
+        <div class="stat-card success">
+          <div class="stat-icon">✅</div>
+          <div class="stat-value">32</div>
+          <div class="stat-label">Verified Banks</div>
+          <div class="stat-description">Government approved</div>
+        </div>
+        <div class="stat-card warning">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-value">15</div>
+          <div class="stat-label">Pending Verification</div>
+          <div class="stat-description">Awaiting approval</div>
+        </div>
+        <div class="stat-card danger">
+          <div class="stat-icon">⚠️</div>
+          <div class="stat-value">3</div>
+          <div class="stat-label">Needs Attention</div>
+          <div class="stat-description">Stock or compliance issues</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">📅 Upcoming Blood Donation Drives</h2>
+          <button class="btn btn-primary">+ Schedule New Drive</button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; margin-top: 2rem;">
+          <div class="story-card">
+            <div class="story-content">
+              <div class="story-author">Visakhapatnam Central Park</div>
+              <div class="story-date">🗓️ June 15, 2023 • 10:00 AM - 4:00 PM</div>
+              <p class="story-text">Join us for a community blood donation drive. Free health checkups and refreshments provided for all donors. Certificates of appreciation will be awarded.</p>
+              <div style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                <span class="badge badge-primary" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">O+ Needed</span>
+                <span class="badge badge-primary" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">A+ Needed</span>
+                <span class="badge badge-success">Free Health Checkup</span>
+              </div>
+            </div>
+          </div>
+          <div class="story-card">
+            <div class="story-content">
+              <div class="story-author">Guntur Medical College</div>
+              <div class="story-date">🗓️ June 22, 2023 • 9:00 AM - 3:00 PM</div>
+              <p class="story-text">Annual blood donation camp organized by medical students. All blood groups welcome. Special recognition for first-time donors and students.</p>
+              <div style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                <span class="badge badge-primary" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">All Groups</span>
+                <span class="badge badge-success">Free Snacks</span>
+                <span class="badge badge-warning">Student Volunteers</span>
+              </div>
+            </div>
+          </div>
+          <div class="story-card">
+            <div class="story-content">
+              <div class="story-author">Tirupati Temple Complex</div>
+              <div class="story-date">🗓️ June 30, 2023 • 8:00 AM - 2:00 PM</div>
+              <p class="story-text">Special donation drive during festival season. Prasadam and certificates for all donors. Special seva opportunities for regular donors.</p>
+              <div style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; gap: 0.75rem;">
+                <span class="badge badge-primary" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">B+ Urgent</span>
+                <span class="badge badge-danger">AB- Critical</span>
+                <span class="badge badge-success">Temple Prasadam</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">📋 Blood Bank Verification Requests</h2>
+        </div>
+        <div class="table-container">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Blood Bank Name</th>
+                <th>Location</th>
+                <th>Contact</th>
+                <th>Submitted</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>LifeCare Blood Bank</td>
+                <td>Nellore</td>
+                <td>9876543210</td>
+                <td>3 days ago</td>
+                <td><span class="badge badge-warning">Pending</span></td>
+                <td>
+                  <button class="btn btn-success" style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-right: 0.5rem;">Approve</button>
+                  <button class="btn btn-danger" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Reject</button>
+                </td>
+              </tr>
+              <tr>
+                <td>RedCross Blood Center</td>
+                <td>Kurnool</td>
+                <td>8765432109</td>
+                <td>5 days ago</td>
+                <td><span class="badge badge-warning">Pending</span></td>
+                <td>
+                  <button class="btn btn-success" style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-right: 0.5rem;">Approve</button>
+                  <button class="btn btn-danger" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Reject</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Sri Sai Blood Bank</td>
+                <td>Chittoor</td>
+                <td>7654321098</td>
+                <td>1 day ago</td>
+                <td><span class="badge badge-warning">Pending</span></td>
+                <td>
+                  <button class="btn btn-success" style="padding: 0.5rem 1rem; font-size: 0.9rem; margin-right: 0.5rem;">Approve</button>
+                  <button class="btn btn-danger" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Reject</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- Analytics Tab -->
+    <div class="tab-content" id="analytics">
+      <h1 class="section-title">📊 Analytics & Insights</h1>
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-icon">💉</div>
+          <div class="stat-value">1,847</div>
+          <div class="stat-label">Total Donations (2023)</div>
+          <div class="stat-description">Year-to-date donations across AP</div>
+        </div>
+        <div class="stat-card success">
+          <div class="stat-icon">🔄</div>
+          <div class="stat-value">94%</div>
+          <div class="stat-label">Donor Retention Rate</div>
+          <div class="stat-description">Donors returning to donate again</div>
+        </div>
+        <div class="stat-card warning">
+          <div class="stat-icon">📈</div>
+          <div class="stat-value">2.8</div>
+          <div class="stat-label">Avg. Donations per Donor</div>
+          <div class="stat-description">Annual average per registered donor</div>
+        </div>
+        <div class="stat-card danger">
+          <div class="stat-icon">❤️</div>
+          <div class="stat-value">342</div>
+          <div class="stat-label">Lives Saved</div>
+          <div class="stat-description">Estimated lives saved by donations</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">🩸 Blood Group Distribution</h2>
+        </div>
+        <div class="chart-container">
+          <div class="chart-bar-container">
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 85%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">32%</div>
+              </div>
+              <div class="chart-label">O+</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 75%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">28%</div>
+              </div>
+              <div class="chart-label">A+</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 60%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">22%</div>
+              </div>
+              <div class="chart-label">B+</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 35%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">13%</div>
+              </div>
+              <div class="chart-label">AB+</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 20%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">8%</div>
+              </div>
+              <div class="chart-label">O-</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 15%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">6%</div>
+              </div>
+              <div class="chart-label">A-</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 12%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">5%</div>
+              </div>
+              <div class="chart-label">B-</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 8%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">3%</div>
+              </div>
+              <div class="chart-label">AB-</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">📈 Monthly Donation Trends</h2>
+        </div>
+        <div class="chart-container">
+          <div class="chart-bar-container">
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 40%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">120</div>
+              </div>
+              <div class="chart-label">Jan</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 45%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">140</div>
+              </div>
+              <div class="chart-label">Feb</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 55%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">160</div>
+              </div>
+              <div class="chart-label">Mar</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 65%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">180</div>
+              </div>
+              <div class="chart-label">Apr</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 75%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">200</div>
+              </div>
+              <div class="chart-label">May</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 85%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">220</div>
+              </div>
+              <div class="chart-label">Jun</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 70%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">190</div>
+              </div>
+              <div class="chart-label">Jul</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 60%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">170</div>
+              </div>
+              <div class="chart-label">Aug</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 50%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">150</div>
+              </div>
+              <div class="chart-label">Sep</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 55%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">165</div>
+              </div>
+              <div class="chart-label">Oct</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 75%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">210</div>
+              </div>
+              <div class="chart-label">Nov</div>
+            </div>
+            <div class="chart-bar-wrapper">
+              <div class="chart-bar" style="height: 90%; background: linear-gradient(180deg, #dc2626 0%, #b91c1c 100%);">
+                <div class="chart-value">250</div>
+              </div>
+              <div class="chart-label">Dec</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">🗺️ District-wise Donor Distribution</h2>
+        </div>
+        <div class="map-container">
+          <div style="position: absolute; top: 25%; left: 20%;">
+            <div class="map-marker" style="animation-delay: 0s;"></div>
+            <div class="map-label">Visakhapatnam</div>
+          </div>
+          <div style="position: absolute; top: 35%; left: 30%;">
+            <div class="map-marker" style="animation-delay: 0.2s;"></div>
+            <div class="map-label">Vizianagaram</div>
+          </div>
+          <div style="position: absolute; top: 45%; left: 40%;">
+            <div class="map-marker" style="animation-delay: 0.4s;"></div>
+            <div class="map-label">East Godavari</div>
+          </div>
+          <div style="position: absolute; top: 55%; left: 50%;">
+            <div class="map-marker" style="animation-delay: 0.6s;"></div>
+            <div class="map-label">West Godavari</div>
+          </div>
+          <div style="position: absolute; top: 65%; left: 60%;">
+            <div class="map-marker" style="animation-delay: 0.8s;"></div>
+            <div class="map-label">Krishna</div>
+          </div>
+          <div style="position: absolute; top: 75%; left: 70%;">
+            <div class="map-marker" style="animation-delay: 1s;"></div>
+            <div class="map-label">Guntur</div>
+          </div>
+          <div style="position: absolute; top: 40%; left: 75%;">
+            <div class="map-marker" style="animation-delay: 1.2s;"></div>
+            <div class="map-label">Prakasam</div>
+          </div>
+          <div style="position: absolute; top: 50%; left: 80%;">
+            <div class="map-marker" style="animation-delay: 1.4s;"></div>
+            <div class="map-label">Nellore</div>
+          </div>
+          <div style="position: absolute; top: 60%; left: 25%;">
+            <div class="map-marker" style="animation-delay: 1.6s;"></div>
+            <div class="map-label">Srikakulam</div>
+          </div>
+          <div style="position: absolute; top: 70%; left: 35%;">
+            <div class="map-marker" style="animation-delay: 1.8s;"></div>
+            <div class="map-label">Anantapur</div>
+          </div>
+          <div style="position: absolute; top: 80%; left: 45%;">
+            <div class="map-marker" style="animation-delay: 2s;"></div>
+            <div class="map-label">Kurnool</div>
+          </div>
+          <div style="position: absolute; top: 90%; left: 55%;">
+            <div class="map-marker" style="animation-delay: 2.2s;"></div>
+            <div class="map-label">YSR Kadapa</div>
+          </div>
+          <div style="position: absolute; top: 85%; left: 65%;">
+            <div class="map-marker" style="animation-delay: 2.4s;"></div>
+            <div class="map-label">Chittoor</div>
+          </div>
+          <div style="color: var(--secondary); font-weight: 700; font-size: 1.5rem; text-align: center; background: rgba(255, 255, 255, 0.8); padding: 1rem; border-radius: 1rem;">
+            Andhra Pradesh Blood Donor Distribution Map
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">🔮 Predictive Analytics</h2>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+          <div class="stat-card warning">
+            <div class="stat-icon">⚠️</div>
+            <div class="stat-value">AB-</div>
+            <div class="stat-label">Critical Shortage Expected</div>
+            <div class="stat-description">Predicted shortage in next 14 days across 8 districts. Immediate donor outreach recommended.</div>
+            <button class="btn btn-primary" style="margin-top: 1.5rem;">Send Alert to Donors</button>
+          </div>
+          <div class="stat-card danger">
+            <div class="stat-icon">🎉</div>
+            <div class="stat-value">O+</div>
+            <div class="stat-label">High Demand During Festival</div>
+            <div class="stat-description">Sankranti festival may increase demand by 40%. Plan special donation drives in advance.</div>
+            <button class="btn btn-primary" style="margin-top: 1.5rem;">Schedule Donation Drive</button>
+          </div>
+          <div class="stat-card success">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value">B+</div>
+            <div class="stat-label">Stable Supply</div>
+            <div class="stat-description">Adequate stock expected for next 30 days. Continue regular donor engagement.</div>
+            <button class="btn btn-outline" style="margin-top: 1.5rem;">Monitor Stock Levels</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Advanced Features Tab -->
+    <div class="tab-content" id="advanced">
+      <h1 class="section-title">🚀 Advanced Features</h1>
+      <div class="card floating">
+        <div class="card-header">
+          <h2 class="card-title">🤖 AI Donor Matching Assistant</h2>
+        </div>
+        <div style="padding: 2rem;">
+          <div style="background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%); padding: 2rem; border-radius: 1.5rem; margin-bottom: 2rem;">
+            <h3 style="color: var(--primary-dark); margin-bottom: 1rem; font-size: 1.5rem;">How AI Matching Works</h3>
+            <p style="margin-bottom: 1.5rem; line-height: 1.7;">Our AI system analyzes multiple factors to find the best-fit donors for each emergency request, ensuring the fastest possible response while maintaining donor safety and eligibility.</p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+              <div style="background: white; padding: 1.5rem; border-radius: 1rem; box-shadow: var(--shadow-md);">
+                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem;">📍</div>
+                <h4 style="font-weight: 700; margin-bottom: 0.5rem;">Location & Proximity</h4>
+                <p>Matches donors within optimal distance from the hospital for quick response.</p>
+              </div>
+              <div style="background: white; padding: 1.5rem; border-radius: 1rem; box-shadow: var(--shadow-md);">
+                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem;">🩸</div>
+                <h4 style="font-weight: 700; margin-bottom: 0.5rem;">Blood Compatibility</h4>
+                <p>Considers blood type rarity and compatibility for optimal matching.</p>
+              </div>
+              <div style="background: white; padding: 1.5rem; border-radius: 1rem; box-shadow: var(--shadow-md);">
+                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem;">⭐</div>
+                <h4 style="font-weight: 700; margin-bottom: 0.5rem;">Reliability Score</h4>
+                <p>Prioritizes donors with high response rates and commitment history.</p>
+              </div>
+            </div>
+          </div>
+          <div style="background: var(--primary-light); padding: 1.5rem; border-radius: 1.5rem; margin: 2rem 0;">
+            <h4 style="color: var(--primary-dark); font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <span style="width: 24px; height: 24px; background: var(--primary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">AI</span>
+              AI Recommendation
+            </h4>
+            <p style="margin: 0; font-style: italic;">For critical O+ request in Visakhapatnam, top 3 donors identified within 5km radius with reliability scores >90%. Estimated arrival time: 25-40 minutes.</p>
+          </div>
+          <button class="btn btn-primary" style="display: block; margin: 0 auto;">Run AI Matching Simulation</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">🌪️ Disaster Mode</h2>
+        </div>
+        <div style="padding: 2rem;">
+          <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%); padding: 2rem; border-radius: 1.5rem; margin-bottom: 2rem;">
+            <h3 style="color: var(--danger); margin-bottom: 1rem; font-size: 1.5rem;">Activate for Mass Emergencies</h3>
+            <p style="margin-bottom: 1.5rem; line-height: 1.7;">Use Disaster Mode for mass emergency broadcasts during accidents, natural disasters, or other large-scale emergencies requiring significant blood donations.</p>
+          </div>
+          <form style="display: grid; gap: 1.5rem;">
+            <div class="form-group">
+              <label class="form-label">Disaster Type</label>
+              <select class="form-control">
+                <option value="">Select disaster type</option>
+                <option value="accident">Major Accident</option>
+                <option value="flood">Flood</option>
+                <option value="earthquake">Earthquake</option>
+                <option value="epidemic">Epidemic</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Affected Area</label>
+              <input type="text" class="form-control" placeholder="Enter affected districts or locations">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Blood Groups Needed</label>
+              <div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; padding: 1.5rem; background: var(--primary-light); border-radius: 1.5rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border-radius: 50px; box-shadow: var(--shadow-sm); cursor: pointer;">
+                  <input type="checkbox" value="O+" style="width: 18px; height: 18px;"> O+
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border-radius: 50px; box-shadow: var(--shadow-sm); cursor: pointer;">
+                  <input type="checkbox" value="A+" style="width: 18px; height: 18px;"> A+
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border-radius: 50px; box-shadow: var(--shadow-sm); cursor: pointer;">
+                  <input type="checkbox" value="B+" style="width: 18px; height: 18px;"> B+
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border-radius: 50px; box-shadow: var(--shadow-sm); cursor: pointer;">
+                  <input type="checkbox" value="AB+" style="width: 18px; height: 18px;"> AB+
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border-radius: 50px; box-shadow: var(--shadow-sm); cursor: pointer;">
+                  <input type="checkbox" value="O-" style="width: 18px; height: 18px;"> O-
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border-radius: 50px; box-shadow: var(--shadow-sm); cursor: pointer;">
+                  <input type="checkbox" value="A-" style="width: 18px; height: 18px;"> A-
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border-radius: 50px; box-shadow: var(--shadow-sm); cursor: pointer;">
+                  <input type="checkbox" value="B-" style="width: 18px; height: 18px;"> B-
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem 1.5rem; background: white; border-radius: 50px; box-shadow: var(--shadow-sm); cursor: pointer;">
+                  <input type="checkbox" value="AB-" style="width: 18px; height: 18px;"> AB-
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Emergency Message</label>
+              <textarea class="form-control" rows="4" placeholder="Enter urgent message for donors. Be specific about the emergency and what's needed."></textarea>
+            </div>
+            <button class="btn btn-danger" style="background: linear-gradient(135deg, var(--danger) 0%, #dc2626 100%); padding: 1rem 2rem; font-size: 1.1rem; margin-top: 1rem;">
+              🚨 ACTIVATE DISASTER MODE
+            </button>
+          </form>
+        </div>
+      </div>
+      <div class="stats-container">
+        <div class="stat-card">
+          <div class="stat-icon">🛡️</div>
+          <div class="stat-value">98.7%</div>
+          <div class="stat-label">Fraud Detection Accuracy</div>
+          <div class="stat-description">AI system blocking fake accounts</div>
+        </div>
+        <div class="stat-card success">
+          <div class="stat-icon">✅</div>
+          <div class="stat-value">1,247</div>
+          <div class="stat-label">Verified Donors</div>
+          <div class="stat-description">Phone & email confirmed</div>
+        </div>
+        <div class="stat-card warning">
+          <div class="stat-icon">🚫</div>
+          <div class="stat-value">23</div>
+          <div class="stat-label">Blocked Suspicious Accounts</div>
+          <div class="stat-description">Potential fraudulent activity</div>
+        </div>
+        <div class="stat-card danger">
+          <div class="stat-icon">💯</div>
+          <div class="stat-value">0</div>
+          <div class="stat-label">Confirmed Fraud Cases</div>
+          <div class="stat-description">System effectiveness</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">👥 Community Features</h2>
+        </div>
+        <div style="padding: 2rem;">
+          <h3 style="margin-bottom: 2rem; color: var(--primary-dark); font-size: 1.75rem; text-align: center;">🌟 Success Stories</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+            <div class="story-card">
+              <div class="story-content">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                  <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.25rem;">S</div>
+                  <div>
+                    <div class="story-author">Suresh, saved by O+ donor</div>
+                    <div class="story-date">May 12, 2023</div>
+                  </div>
+                </div>
+                <p class="story-text">"After my accident, I needed 4 units of O+ blood. Thanks to the quick response from the blood donation system, I received the blood within 45 minutes. I'm now recovering well and grateful to my anonymous donor who responded to the emergency alert."</p>
+                <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+                  <span class="badge badge-success">Life Saved</span>
+                  <span class="badge badge-primary" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">O+ Blood</span>
+                </div>
+              </div>
+            </div>
+            <div class="story-card">
+              <div class="story-content">
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                  <div style="width: 50px; height: 50px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 1.25rem;">D</div>
+                  <div>
+                    <div class="story-author">Dr. Anitha, Krishna Hospital</div>
+                    <div class="story-date">April 28, 2023</div>
+                  </div>
+                </div>
+                <p class="story-text">"The emergency notification system helped us find a rare AB- donor within 2 hours for our patient in critical condition. This system is literally saving lives in our community. The AI matching is incredibly accurate and fast."</p>
+                <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem;">
+                  <span class="badge badge-danger">Critical Case</span>
+                  <span class="badge badge-primary" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">AB- Blood</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <h3 style="margin-bottom: 2rem; color: var(--primary-dark); font-size: 1.75rem; text-align: center;">📚 Health Tips for Donors</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem;">
+            <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%); padding: 2rem; border-radius: 1.5rem;">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--success) 0%, #059669 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; margin-bottom: 1.5rem;">🥗</div>
+              <h4 style="color: var(--success); font-weight: 700; margin-bottom: 1rem; font-size: 1.25rem;">Before Donation</h4>
+              <ul style="margin: 0; padding-left: 1.5rem; line-height: 1.8;">
+                <li>Get adequate sleep (7-8 hours) the night before</li>
+                <li>Eat a healthy, iron-rich meal 2-3 hours before donation</li>
+                <li>Drink plenty of water (at least 500ml) before donation</li>
+                <li>Avoid alcohol for 24 hours before donation</li>
+                <li>Bring ID and donor card if you have one</li>
+              </ul>
+            </div>
+            <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%); padding: 2rem; border-radius: 1.5rem;">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--warning) 0%, #d97706 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; margin-bottom: 1.5rem;">💧</div>
+              <h4 style="color: var(--warning); font-weight: 700; margin-bottom: 1rem; font-size: 1.25rem;">After Donation</h4>
+              <ul style="margin: 0; padding-left: 1.5rem; line-height: 1.8;">
+                <li>Rest for 10-15 minutes after donation</li>
+                <li>Drink extra fluids for next 24-48 hours</li>
+                <li>Avoid heavy lifting or strenuous exercise for 5 hours</li>
+                <li>Eat iron-rich foods for the next few days</li>
+                <li>Keep the bandage on for at least 4 hours</li>
+              </ul>
+            </div>
+            <div style="background: linear-gradient(135deg, rgba(220, 38, 38, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%); padding: 2rem; border-radius: 1.5rem;">
+              <div style="width: 60px; height: 60px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.75rem; margin-bottom: 1.5rem;">❤️</div>
+              <h4 style="color: var(--primary-dark); font-weight: 700; margin-bottom: 1rem; font-size: 1.25rem;">Benefits of Regular Donation</h4>
+              <ul style="margin: 0; padding-left: 1.5rem; line-height: 1.8;">
+                <li>Reduces risk of heart disease and cancer</li>
+                <li>Helps in weight management</li>
+                <li>Rejuvenates blood cell production</li>
+                <li>Saves up to 3 lives per donation</li>
+                <li>Provides free health check-ups</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#">Register as Donor</a></li>
+          <li><a href="#">Emergency Request</a></li>
+          <li><a href="#">Find Blood Bank</a></li>
+          <li><a href="#">Donation Drives</a></li>
+          <li><a href="#">Success Stories</a></li>
+          <li><a href="#">Donor Rewards</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="#">Donor Eligibility</a></li>
+          <li><a href="#">Blood Types Info</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Contact Support</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact Us</h3>
+        <ul>
+          <li>📍 Andhra Pradesh Blood Donation Center</li>
+          <li>🏛️ Vijayawada, Andhra Pradesh</li>
+          <li>✉️ info@apblood.gov.in</li>
+          <li>🌐 www.apblood.gov.in</li>
+          <li>📱 Social: @APBloodDonation</li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <div class="emergency-hotline">
+          🚨 24/7 AP Emergency Helpline: +91-1800-AP-BLOOD
+        </div>
+        <div style="margin-top: 1.5rem; text-align: center;">
+          <p style="margin: 0; font-weight: 600;">Available 24/7 for emergency blood requests</p>
+          <p style="margin: 0.5rem 0 0; font-size: 0.9rem; opacity: 0.8;">Call, WhatsApp, or SMS for immediate assistance</p>
+        </div>
+      </div>
+    </div>
+    <div class="copyright">
+      &copy; 2023 Andhra Pradesh Blood Donation Management System. Saving Lives, One Donation at a Time. ❤️
+    </div>
+  </footer>
+  <div class="fab" id="scrollToTop" title="Scroll to top"></div>
+  <script src="script.js"></script>
+</body>
+</html>
